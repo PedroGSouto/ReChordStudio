@@ -1,2 +1,2 @@
 # ReChordStudio
-Software developed for ICM class.
+Software developed for IHC class.
