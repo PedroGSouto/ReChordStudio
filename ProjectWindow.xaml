@@ -1,0 +1,629 @@
+﻿<Window x:Class="ReChord_Studio.ProjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReChord_Studio"
+        mc:Ignorable="d"
+        Title="ReChord Studio" Height="1080" Width="1920"
+        WindowState="Maximized" KeyDown="Key_Down" KeyUp="Key_Up">
+    <Viewbox StretchDirection="Both" Stretch="Fill">
+        <Grid Height="1056" Width="1925">
+            <Canvas Background="#FF323232">
+                <Menu HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="1925">
+                    <MenuItem BorderBrush="#00000000" Header="File" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="New Project" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="newproject"/>
+                        <MenuItem Header="Open" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Save" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="saved"/>
+                        <MenuItem Header="Save as..." FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Import" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Export" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Exit" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="shutdown"/>
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="Edit" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Undo" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Cut" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Copy" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Paste" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="Add" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Add plugin" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="View" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Instruments" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Effects" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Track List" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Mixer" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Piano" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Shortcuts" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="shortcut"/>
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="Options" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Midi Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Audio Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="General Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="File Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Manage Plugins" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Project Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Project Info" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Debug" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <Separator/>
+                        <MenuItem Header="Disable Shortcuts" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="Metronome" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="Tools" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Macros" FontFamily="Arial" FontSize="18" FontWeight="Normal"/>
+                    </MenuItem>
+                    <MenuItem BorderBrush="#00000000" Header="Help" FontFamily="Arial" FontSize="22" FontWeight="Bold">
+                        <MenuItem Header="Tutorial" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="enabletut"/>
+                        <Separator/>
+                        <MenuItem Header="Support" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                    </MenuItem>
+                    <Image HorizontalAlignment="Right" Height="24" Source="img/magnify-icon.png" VerticalAlignment="Top" Width="24" Margin="1200,0,-12,0"/>
+                    <TextBox Width="200" Height="25" Margin="0" Text="Search" FontFamily="Arial" TextAlignment="Left" FontSize="18"/>
+                    <DockPanel Height="0" Width="0"/>
+                </Menu>
+                <Button Cursor="Hand" PreviewMouseLeftButtonDown="IntrumentsButton" Content="Intruments" HorizontalAlignment="Left" Margin="-1,28,0,0" VerticalAlignment="Top" Width="150" Height="43" FontFamily="Arial" Foreground="White" Background="#FF262627"/>
+                <Button Cursor="Hand" PreviewMouseLeftButtonDown="EffectsButton" Content="Effects" HorizontalAlignment="Left" Margin="149,28,0,0" VerticalAlignment="Top" Width="150" Height="43" FontFamily="Arial" Background="#FF262627" Foreground="White" />
+                <Grid Name="InstList" HorizontalAlignment="Left" Height="680" Margin="-1,71,0,0" VerticalAlignment="Top" Width="300">
+                    <TreeView Name="Instruments" Background="#FF323232" HorizontalAlignment="Left" Height="680" VerticalAlignment="Top" Width="300">
+                        <TreeViewItem Header="Piano" IsExpanded="false" Foreground="#FFCDFBA5" FontSize="16">
+                            <TreeViewItem Header="Acoustic Grand Piano" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Bright Acoustic Piano" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Electric Grand Piano" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Honky-tonk Piano" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Electric Piano 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Electric Piano 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Harpsichord" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                            <TreeViewItem Header="Clavi" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C"/>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Chromatic Percussion" IsExpanded="false" Foreground="#FF87EBF0" FontSize="16">
+                            <TreeViewItem Header="Celesta" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Glockenspiel" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Music Box" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Vibraphone" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Marimba" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Xylophone" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Tubular Bells" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Dulcimer" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Organ" IsExpanded="false" Foreground="#FFF57D82" FontSize="16">
+                            <TreeViewItem Header="Drawbar Organ" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Percussive Organ" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Rock Organ" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Church Organ" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Reed Organ" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Accordion" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Harmonica" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Tango Accordion" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Guitar" IsExpanded="false" Foreground="#FFC9CD78" FontSize="16">
+                            <TreeViewItem Header="Acoustic Guitar (nylon)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Acoustic Guitar (steel)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Electric Guitar (jazz)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Electric Guitar (clean)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Electric Guitar (muted)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Overdriven Guitar" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Distortion Guitar" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="Guitar Harmonics" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Bass" IsExpanded="false" Foreground="#FF9AA8F9" FontSize="16">
+                            <TreeViewItem Header="Acoustic Bass" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Electric Bass (finger)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Electric Bass (pick)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Fretless Bass" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Slap Bass 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Slap Bass 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Synth Bass 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Synth Bass 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Strings" IsExpanded="false" Foreground="#FFF9D79A" FontSize="16">
+                            <TreeViewItem Header="Violin" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Viola" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Cello" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Contrabass" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Tremolo Strings" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Pizzicato Strings" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Orchestral Harp" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Timpani" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Ensemble" IsExpanded="false" Foreground="#FFF1B4E6" FontSize="16">
+                            <TreeViewItem Header="String Ensemble 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="String Ensemble 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Synth Strings 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Synth Strings 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Choir Aahs" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Voice Oohs" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Synth Choir" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Orchestra Hit" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Brass" IsExpanded="false" Foreground="#FFFFFBFE" FontSize="16">
+                            <TreeViewItem Header="Trumpet" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Trombone" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Tuba" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Muted Trumpet" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="French Horn" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Brass Section" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Synth Brass 1" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                            <TreeViewItem Header="Synth Brass 2" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFFFBFE" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Reed" IsExpanded="false" Foreground="#FF82C6F5" FontSize="16">
+                            <TreeViewItem Header="Soprano Sax" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Alto Sax" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Tenor Sax" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Baritone Sax" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Oboe" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="English Horn" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Bassoon" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                            <TreeViewItem Header="Clarinet" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF0097FF" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Pipe" IsExpanded="false" Foreground="#FFC3FD93" FontSize="16">
+                            <TreeViewItem Header="Piccolo" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Flute" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Recorder" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Pan Flute" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Blown bottle" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Shakuhachi" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Whistle" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                            <TreeViewItem Header="Ocarina" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF7BFF0C" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Synth Lead" IsExpanded="false" Foreground="#FFA1F7FB" FontSize="16">
+                            <TreeViewItem Header="Lead 1 (square)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 2 (sawtooth)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 3 (calliope)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 4 (chiff)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 5 (charang)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 6 (voice)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 7 (fifths)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                            <TreeViewItem Header="Lead 8 (bass + lead)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF00F3FF" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Synth Pad" IsExpanded="false" Foreground="#FFFB646A" FontSize="16">
+                            <TreeViewItem Header="Pad 1 (new age)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 2 (warm)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 3 (polysynth)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 4 (choir)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 5 (bowed)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 6 (metallic)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 7 (halo)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                            <TreeViewItem Header="Pad 8 (sweep)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFD1A24" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Synth Effects" IsExpanded="false" Foreground="#FFC9CD73" FontSize="16">
+                            <TreeViewItem Header="FX 1 (rain)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 2 (soundtrack)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 3 (crystal)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 4 (atmosphere)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 5 (brightness)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 6 (goblins)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 7 (echoes)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                            <TreeViewItem Header="FX 8 (sci-fi)" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFC6CF0D" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Ethnic" IsExpanded="false" Foreground="#FF9CA9F3" FontSize="16">
+                            <TreeViewItem Header="Sitar" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Banjo" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Shamisen" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Koto" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Kalimba" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Bagpipe" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Fiddle" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                            <TreeViewItem Header="Shanai" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FF5F74F5" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Percussive" IsExpanded="false" Foreground="#FFEAC077" FontSize="16">
+                            <TreeViewItem Header="Tinkle Bell" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Agogo" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Steel Drums" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Woodblock" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Taiko Drum" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Melodic Tom" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Synth Drum" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                            <TreeViewItem Header="Reverse Cymbal" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFFBA000" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="Sound Effects" IsExpanded="false" Foreground="#FFF9AEEC" FontSize="16">
+                            <TreeViewItem Header="Guitar Fret Noise" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Breath Noise" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Seashore" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Bird Tweet" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Telephone Ring" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Helicopter" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Applause" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                            <TreeViewItem Header="Gunshot" MouseDoubleClick="ChangeInstrument" PreviewMouseLeftButtonDown="Drag" Foreground="#FFF57BDF" />
+                        </TreeViewItem>
+                    </TreeView>
+
+                </Grid>
+                <Grid Name="EffectList" Visibility="Hidden" HorizontalAlignment="Left" Height="680" Margin="-1,71,0,0" VerticalAlignment="Top" Width="300">
+                    <TreeView Name="Effects" Background="#FF323232" HorizontalAlignment="Left" Height="680" VerticalAlignment="Top" Width="300">
+                        <TreeViewItem Header="Reverb" IsExpanded="false" Foreground="#FFCDFBA5" FontSize="16">
+                            <TreeViewItem Header="Reverb1" Foreground="#FF7BFF0C" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Reverb2" Foreground="#FF7BFF0C" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Reverb3" Foreground="#FF7BFF0C" PreviewMouseLeftButtonDown="Drag2"/>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Distortion" IsExpanded="false" Foreground="#FF87EBF0" FontSize="16">
+                            <TreeViewItem Header="Distortion1" Foreground="#FF00F3FF" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Distortion2" Foreground="#FF00F3FF" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Distortion3" Foreground="#FF00F3FF" PreviewMouseLeftButtonDown="Drag2"/>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Echo" IsExpanded="false" Foreground="#FFF57D82" FontSize="16">
+                            <TreeViewItem Header="Echo1" Foreground="#FFFD1A24" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Echo2" Foreground="#FFFD1A24" PreviewMouseLeftButtonDown="Drag2"/>
+                            <TreeViewItem Header="Echo3" Foreground="#FFFD1A24" PreviewMouseLeftButtonDown="Drag2"/>
+                        </TreeViewItem>
+                    </TreeView>
+                </Grid>
+
+                <Canvas>
+                    <Image HorizontalAlignment="Left" Source="img/piano.png" Height="298" Margin="558,750,0,0" VerticalAlignment="Top" Width="796"/>
+                    <Button x:Name="CButton" HorizontalAlignment="Left" Margin="564,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="CButton_Down" PreviewMouseLeftButtonUp="CButton_Up" Content="" Cursor="Hand"/>
+                    <TextBlock x:Name="ABlock" IsHitTestVisible="False" Text="A" Foreground="black" FontSize="36" Canvas.Left="589" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="DButton" HorizontalAlignment="Left" Margin="643,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="DButton_Down" PreviewMouseLeftButtonUp="DButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="SBlock" IsHitTestVisible="False" Text="S" Foreground="black" FontSize="36" Canvas.Left="668" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton1" HorizontalAlignment="Left" Margin="612,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton1_Down" PreviewMouseLeftButtonUp="BButton1_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="WBlock" IsHitTestVisible="False" Text="W" TextAlignment="Center" Foreground="white" FontSize="36" Canvas.Left="612" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="EButton" HorizontalAlignment="Left" Margin="721,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="EButton_Down" PreviewMouseLeftButtonUp="EButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="DBlock" IsHitTestVisible="False" Text="D" Foreground="black" FontSize="36" Canvas.Left="747" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton2" HorizontalAlignment="Left" Margin="705,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton2_Down" PreviewMouseLeftButtonUp="BButton2_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="EBlock" IsHitTestVisible="False" Text="E" Foreground="white" TextAlignment="Center" FontSize="36" Canvas.Left="705" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="FButton" HorizontalAlignment="Left" Margin="801,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="FButton_Down" PreviewMouseLeftButtonUp="FButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="FBlock" IsHitTestVisible="False" Text="F" Foreground="black" FontSize="36" Canvas.Left="829" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="GButton" HorizontalAlignment="Left" Margin="879,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="GButton_Down" PreviewMouseLeftButtonUp="GButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="GBlock" IsHitTestVisible="False" Text="G" Foreground="black" FontSize="36" Canvas.Left="904" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton3" HorizontalAlignment="Left" Margin="846,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton3_Down" PreviewMouseLeftButtonUp="BButton3_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="TBlock" IsHitTestVisible="False" TextAlignment="Center" Text="T" Foreground="white" FontSize="36" Canvas.Left="846" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="AButton" HorizontalAlignment="Left" Margin="958,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="AButton_Down" PreviewMouseLeftButtonUp="AButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="HBlock" IsHitTestVisible="False" Text="H" Foreground="black" FontSize="36" Canvas.Left="985" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton4" HorizontalAlignment="Left" Margin="935,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton4_Down" PreviewMouseLeftButtonUp="BButton4_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="YBlock" IsHitTestVisible="False" Text="Y" TextAlignment="center" Foreground="white" FontSize="36" Canvas.Left="935" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="BButton" HorizontalAlignment="Left" Margin="1037,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="BButton_Down" PreviewMouseLeftButtonUp="BButton_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="JBlock" IsHitTestVisible="False" Text="J" Foreground="black" FontSize="36" Canvas.Left="1065" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton5" HorizontalAlignment="Left" Margin="1024,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton5_Down" PreviewMouseLeftButtonUp="BButton5_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="UBlock" IsHitTestVisible="False" Text="U" TextAlignment="Center" Foreground="white" FontSize="36" Canvas.Left="1024" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="CButton2" HorizontalAlignment="Left" Margin="1115,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="C2Button_Down" PreviewMouseLeftButtonUp="C2Button_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="KBlock" IsHitTestVisible="False" Text="K" Foreground="black" FontSize="36" Canvas.Left="1141" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="DButton2" HorizontalAlignment="Left" Margin="1194,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="D2Button_Down" PreviewMouseLeftButtonUp="D2Button_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="LBlock" IsHitTestVisible="False" Text="L" Foreground="black" FontSize="36" Canvas.Left="1222" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="EButton2" HorizontalAlignment="Left" Margin="1272,822,0,0" VerticalAlignment="Top" Width="73" Height="217" Opacity="0" PreviewMouseLeftButtonDown="E2Button_Down" PreviewMouseLeftButtonUp="E2Button_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="ÇBlock" IsHitTestVisible="False" Text="Ç" Foreground="black" FontSize="36" Canvas.Left="1298" Canvas.Top="985" FontFamily="Arial" FontWeight="Bold"/>
+                    <Button x:Name="BButton7" HorizontalAlignment="Left" Margin="1254,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton7_Down" PreviewMouseLeftButtonUp="BButton7_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="PBlock" IsHitTestVisible="False" TextAlignment="center" Text="P" Foreground="white" FontSize="36" Canvas.Left="1254" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                    <Button x:Name="BButton6" HorizontalAlignment="Left" Margin="1162,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton6_Down" PreviewMouseLeftButtonUp="BButton6_Up" Cursor="Hand"/>
+                    <TextBlock x:Name="OBlock" IsHitTestVisible="False" TextAlignment="center" Text="O" Foreground="white" FontSize="36" Canvas.Left="1162" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
+                </Canvas>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="1626" Canvas.Left="299" Canvas.Top="71">
+                    <Grid MouseLeftButtonDown="OpenPR" x:Name="TrackGrid" HorizontalAlignment="Left"  Height="Auto" VerticalAlignment="Top" Width="1613" Cursor="Hand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
+                        </Grid.RowDefinitions>
+                        <Canvas x:Name="CanvasTrack"  Grid.Row="0" Background="#66e0ff" Cursor="Hand" PreviewMouseLeftButtonDown="trackhi">
+                            <Canvas Background="#FF33C0E4" Width="180" Height="120">
+                                <Label FontSize="24" Canvas.Top="36" Canvas.Left="46" Content="Track 1"/>
+                            </Canvas>
+                        </Canvas>
+                        <Canvas Grid.Row="1" Background="#ff4d4d" Cursor="Hand" PreviewMouseLeftButtonDown="trackhi">
+                            <Canvas Background="#FFF53535" Width="180" Height="120">
+                                <Label FontSize="24" Canvas.Top="36" Canvas.Left="46" Content="Track 2"/>
+                            </Canvas>
+                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="185" Stroke="Black" Canvas.Top="101" Width="52"/>
+                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="434" Stroke="Black" Canvas.Top="74" Width="52"/>
+                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="355" Stroke="Black" Canvas.Top="28" Width="52"/>
+                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="299" Stroke="Black" Canvas.Top="101" Width="52"/>
+                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="243" Stroke="Black" Canvas.Top="51" Width="52"/>
+                        </Canvas>
+                        <Canvas Grid.Row="2" Background="#FFBCFF5B" Cursor="Hand" PreviewMouseLeftButtonDown="trackhi">
+                            <Canvas Background="#FF9FF71F" Width="180" Height="120">
+                                <Label FontSize="24" Canvas.Top="36" Canvas.Left="46" Content="Track 3"/>
+                            </Canvas>
+                        </Canvas>
+                    </Grid>
+                </ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Visible" Height="240" Canvas.Left="299" Canvas.Top="511" Width="1626">
+                    <Grid x:Name="VolumeGrid" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="161"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border BorderBrush="white" BorderThickness="1" Grid.Column="0">
+                            <Canvas AllowDrop="true" Background="#FF4B4B4B" MouseLeftButtonDown="ClickStackPanel" Drop="Drop2">
+                                <DockPanel Width="161" Height="240">
+                                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="white" Text="Acoustic Grand Piano" TextAlignment="Center" FontSize="18"/>
+                                    <Slider DockPanel.Dock="Bottom"  Orientation="Vertical" Value="127" Width="10" Height="150" Minimum="0" Maximum="127" ValueChanged="SliderChange"/>
+                                </DockPanel>
+                                <Canvas.ToolTip>
+                                    <ToolTip Content="Effects: ">
+                                    </ToolTip>
+                                </Canvas.ToolTip>
+                                <Canvas.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Remove" PreviewMouseLeftButtonDown="closeInst"/>
+                                        <MenuItem Header="Clear Effects" PreviewMouseLeftButtonDown="removeEffects"/>
+                                    </ContextMenu>
+                                </Canvas.ContextMenu>
+                            </Canvas>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+                <Canvas Height="80" Canvas.Left="299" Canvas.Top="431" Width="1613" >
+                    <Image x:Name="AddTrackButton" Source="img/add-icon.png" Canvas.Left="774" Canvas.Top="8" MouseLeftButtonDown="AddTrack_Click" Cursor="Hand"/>
+                </Canvas>
+                <Canvas Visibility="hidden" x:Name="PianoRoll" Background="#262626" Height="724" Canvas.Left="184" Canvas.Top="73" Width="1552">
+                    <Image Source="img/piano2.png" Height="81" Width="723" RenderTransformOrigin="0.5,0.5" Canvas.Left="-322" Canvas.Top="321">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Grid Name="GridPR" Height="724" Canvas.Left="79" Width="1473" Cursor="Hand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+
+                        </Grid.RowDefinitions>
+
+
+                    </Grid>
+                    <Menu Height="23" Width="1552">
+                        <Image Source="img/Asset_8.ico"/>
+                        <TextBlock  FontFamily="Arial" FontWeight="Bold" FontSize="18" Text="PianoRoll" Width="123"/>
+                        <Image Source="img/close.png" Height="23" Width="32" Margin="1334,0,0,0" PreviewMouseLeftButtonDown="ClosePR"/>
+                    </Menu>
+                </Canvas>
+                <Rectangle Fill="#FF272727" Height="69" Canvas.Left="-1" Stroke="#00000000" Canvas.Top="751" Width="1926"/>
+                <Image Source="img/aicon.ico" Height="52" Canvas.Left="1286" Canvas.Top="756" Width="52" MouseLeftButtonDown="TuneUpButton_Click" Cursor="Hand"/>
+                <Image Source="img/aicon2.ico" Height="52" Canvas.Left="562" Canvas.Top="756" Width="52" MouseLeftButtonDown="TuneDownButton_Click" Cursor="Hand"/>
+                <TextBlock Name="M" Text="M" Canvas.Left="1229" TextWrapping="Wrap" Canvas.Top="756" Height="52" FontFamily="Arial Black" FontSize="48" Width="52" Foreground="White"/>
+                <TextBlock x:Name="m" Text="m" Canvas.Left="1172" TextWrapping="Wrap" Canvas.Top="756" Height="52" FontFamily="Arial Black" FontSize="48" Width="52" Foreground="White"/>
+                <Image Source="img/Asset_14.png" Height="69" Canvas.Left="753" Canvas.Top="751" Width="414"/>
+                <Image Name="StopBut" PreviewMouseLeftButtonDown="Stop" Visibility="Hidden"  Source="img/Record-Pressed-icon.png" Height="43" Canvas.Left="479" Canvas.Top="30" Width="43" Cursor="Hand"/>
+                <Image x:Name="RecBut" PreviewMouseLeftButtonDown="record" Visibility="Visible" Source="img/Record-Normal-icon.png" Height="43" Canvas.Left="479" Canvas.Top="30" Width="43" Cursor="Hand"/>
+                <TextBlock Name="shen" Visibility="Visible" Canvas.Left="35" TextWrapping="Wrap" Canvas.Top="838" Height="188" Width="469" Foreground="White" FontSize="18">Shortcuts:<LineBreak/><LineBreak/>>Piano notes are associated with the keyboard keys<LineBreak/>>M+Piano Key=Major Chord<LineBreak/>>N+Piano Key=Minor Chord</TextBlock>
+                <TextBlock Visibility="Hidden" Canvas.Left="1409" TextWrapping="Wrap" Canvas.Top="825" Height="214" Width="469" Foreground="White" FontSize="18">Note Dictionary:<LineBreak/>>Keyboard A, K= Piano C (Dó)<LineBreak/>>Keyboard S, L= Piano D (Re)<LineBreak/>>Keyboard D, Ç= Piano E (Mi)<LineBreak/>>Keyboard F= Piano F (Fa)<LineBreak/>>Keyboard G= Piano G (Sol)<LineBreak/>>Keyboard H= Piano A (Lá)<LineBreak/>>Keyboard J= Piano B (Si)</TextBlock>
+                <Label Name="tune" VerticalAlignment="Center" HorizontalAlignment="Center" Width="235" Height="64" Content="Tuning: 0" Foreground="white" Canvas.Left="1680" Canvas.Top="751" FontSize="36" FontFamily="Arial Black"/>
+                <Image Cursor="Hand" Source="img/refresh2.ico" Height="41" Canvas.Left="1622" Canvas.Top="756" Width="53" MouseLeftButtonDown="reTune"/>
+                <Image Cursor="Hand" Source="img/play.png" Width="30" Height="30" Canvas.Left="388" Canvas.Top="37"></Image>
+                <Image Cursor="Hand" Source="img/pause.png" Height="30" Width="30" Canvas.Left="420" Canvas.Top="38"></Image>
+
+                <Canvas Name="T1" Height="350" Width="850" Canvas.Left="535" Canvas.Top="365" Background="#99000000" d:IsHidden="True" >
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="22">Welcome to the Rechord Studio Tutorial!</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="10" Canvas.Top="103">In this tutorial we'll go over the most important aspects of Rechord Studio,<LineBreak/>so your musical journey goes smoothly.</TextBlock>
+                    <Button Canvas.Left="705" Canvas.Top="297" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="TStep2">Continue</Button>
+                    <Button Canvas.Left="24" Canvas.Top="297" Height="43" Width="152" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="SkipTuto" Content="Skip Tutorial"/>
+                </Canvas>
+                <Canvas Visibility="Hidden" Background="#99000000" Name="T2" Height="221" Width="512" Canvas.Left="10" Canvas.Top="825">
+                    <TextBlock Text="&#x2794;" Foreground="white" Canvas.Left="432" Canvas.Top="31" Height="90" Width="80" FontSize="72"/>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="12">Piano</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Top="45" Height="143" Canvas.Left="10">>The piano is used to make songs.<LineBreak/>>You can interact with each note using <LineBreak/> the mouse or the keyboard.<LineBreak/>>Press M/N and a Piano key (Major/Minor)<LineBreak/> to make a chord of your choice.</TextBlock>
+                    <Button Canvas.Left="379" Canvas.Top="168" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="TStep3">Ok</Button>
+                </Canvas>
+                <Canvas Visibility="Hidden" Name="T3" Height="204" Width="1325" Canvas.Left="535" Canvas.Top="516" Background="#99000000" >
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="10">Tuning</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="53" Canvas.Top="64">>You can click the +/- to increase or decrease the tuning of the piano.</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="940" Canvas.Top="36">>You can also press the reset button <LineBreak/> to get the tuning back to default.</TextBlock>
+                    <Button Canvas.Left="1192" Canvas.Top="151" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="TStep4">Continue</Button>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="16" Canvas.Top="115" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="742" Canvas.Top="114" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="1080" Canvas.Top="114" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Canvas>
+                <Canvas Visibility="Hidden" Name="T4" Height="360" Width="850" Canvas.Left="299" Canvas.Top="71" Background="#D8000000">
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="10">Intruments</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Top="68" Canvas.Left="10">>Rechord Studio has a lot of instruments divided into categories.<LineBreak/>>Those instruments can be applied to the piano by simply double clicking<LineBreak/> on them.<LineBreak/>>Dragging the instrument name to the panel below will allow you <LineBreak/> to regulate its volume.<LineBreak/>>To remove a certain instrument right click the instrument panel<LineBreak/>and select "Remove".</TextBlock>
+                    <TextBlock Text="&#x2794;" Foreground="white" Canvas.Left="2" Canvas.Top="255" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <Button Canvas.Left="705" Canvas.Top="297" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="TStep5">Continue</Button>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="201" Canvas.Top="270" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Canvas>
+                <Canvas Visibility="Hidden" Name="T5" Height="360" Width="850" Canvas.Left="299" Canvas.Top="71" Background="#D8000000">
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="10">Effects</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Top="59" Canvas.Left="10">>Rechord Studio effects are divided into categories.<LineBreak/>>Those effects can be applied to the piano by simply double clicking<LineBreak/> on them.<LineBreak/>>Dragging the effect name to any of the instrument panels below <LineBreak/> will allow you to apply it to that instrument. You can see what effects are <LineBreak/> applied to it by hovering through its Panel.<LineBreak/>>To remove the effects of an instrument right click the instrument panel<LineBreak/>and select "Clear Effects".</TextBlock>
+                    <TextBlock Text="&#x2794;" Foreground="white" Canvas.Left="2" Canvas.Top="255" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <Button Canvas.Left="705" Canvas.Top="297" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="TStep6">Continue</Button>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="74" Canvas.Top="272" Height="90" Width="80" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Canvas>
+                <Canvas Visibility="Hidden" Name="T6" Height="360" Width="850" Canvas.Left="479" Canvas.Top="71" Background="#D8000000">
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="287" Canvas.Top="10">Tracks and Recording</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="67" Canvas.Top="61">>Having multiple tracks will allow you to make a more complex song in a <LineBreak/> more easy and efficient way. <LineBreak/>>You can access and modify each Track recorded notes by double clicking <LineBreak/>on it.<LineBreak/>>You can also add new tracks using the plus button.<LineBreak/>>Finally, you can record your own song by clicking the record button,<LineBreak/>once you're done click it again to finalize the recording.<LineBreak/>Songs are saved in the Recordings folder of this project, <LineBreak/>so you'll find them there. Have Fun!</TextBlock>
+                    <Button Canvas.Left="705" Canvas.Top="297" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="EndTuto">End</Button>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="-16" Canvas.Top="-15" Height="76" Width="64" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="269.958"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="-5" Canvas.Top="139" Height="76" Width="64" FontSize="64" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="595" Canvas.Top="274" Height="76" Width="64" FontSize="72" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="➔" Foreground="white" Canvas.Left="-5" Canvas.Top="259" Height="76" Width="64" FontSize="64" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Canvas>
+                <Rectangle Name="HitBox" IsHitTestVisible="false"  AllowDrop="true" Drop="Drop" Height="240" Width="1626" Canvas.Left="299" Canvas.Top="511" Fill="#00000000"/>
+            </Canvas>
+        </Grid>
+    </Viewbox>
+</Window>
