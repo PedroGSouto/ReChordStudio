@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Xml;
+using Microsoft.WindowsAPICodePack.Shell.Interop;
 using NAudio.Gui;
 using NAudio.Midi;
 using NAudio.Wave;
@@ -32,8 +34,9 @@ namespace ReChord_Studio
     /// </summary>
     public partial class ProjectWindow : Window
     {
-        int nRec = 0;
+        int nRec;
         int shortenable = 0;
+        int shortenable2 = 0;
         static int currentTrack = 4;
         MidiOut midiOut = new MidiOut(0);
         bool[] isP = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
@@ -41,6 +44,7 @@ namespace ReChord_Studio
         Color white = Color.FromRgb(255, 255, 255);
         Color lightblue = Color.FromRgb(51, 204, 255);
         Label selectedLabel;
+        Canvas selectedCanvas;
         bool UpArrow = false;
         bool DownArrow = false;
         static int tuning = 0;
@@ -49,14 +53,25 @@ namespace ReChord_Studio
         int vol = 127;
         Color[] colorArr = { Color.FromRgb(102, 224, 255), Color.FromRgb(255, 77, 77), Color.FromRgb(188, 255, 91) };
         Color[] colorArr2 = { Color.FromRgb(51, 192, 228), Color.FromRgb(245, 53, 53), Color.FromRgb(159, 247, 31) };
-        
+        System.Media.SoundPlayer player = new SoundPlayer();
+        MediaPlayer mp = new MediaPlayer();
         int pointer = 0;
         int currentVolume = 1;
+        String dir = "..\\..\\Recordings";
+        ImageBrush ib = new ImageBrush();
+        
+
         public ProjectWindow()
         {
             InitializeComponent();
             FillGrid();
-
+            System.IO.DirectoryInfo di = new DirectoryInfo(dir);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            ib.ImageSource = new BitmapImage(new Uri("..\\..\\img\\slider2.png", UriKind.Relative));
+            firstControl.Background = ib;
         }
 
 
@@ -108,8 +123,8 @@ namespace ReChord_Studio
                 pointer++;
             }
             Grid.SetRow(c2, currentTrack - 1);
-
             currentTrack++;
+            sv.ScrollToBottom();
         }
 
         public static class WPFObjectCopier
@@ -1186,6 +1201,11 @@ namespace ReChord_Studio
             e.Handled = true;
         }
 
+        private void OpenPR2(object sender, MouseButtonEventArgs e)
+        {
+            PianoRoll.Visibility = Visibility.Visible;
+        }
+
         private void ClosePR(object sender, MouseButtonEventArgs e)
         {
             PianoRoll.Visibility = Visibility.Hidden;
@@ -1211,22 +1231,29 @@ namespace ReChord_Studio
 
         private void Drag(object sender, MouseButtonEventArgs e)
         {
+            instHere.Visibility = Visibility.Visible;
             HitBox.IsHitTestVisible = true;
             TreeViewItem tvi = (TreeViewItem)sender;
             string header = tvi.Header.ToString();
             string dataFormat = DataFormats.UnicodeText;
             DataObject dataObj = new DataObject(dataFormat, header);
-            DragDrop.DoDragDrop(tvi, dataObj, DragDropEffects.Copy);   
+            DragDrop.DoDragDrop(tvi, dataObj, DragDropEffects.Copy);
+            HitBox.IsHitTestVisible =false;
+            instHere.Visibility = Visibility.Hidden;
+            
         }
 
         private void Drag2(object sender, MouseButtonEventArgs e)
         {
+            effHere.Visibility = Visibility.Visible;
             HitBox.Visibility = Visibility.Hidden;
             TreeViewItem tvi = (TreeViewItem)sender;
             string header = tvi.Header.ToString();
             string dataFormat = DataFormats.UnicodeText;
             DataObject dataObj = new DataObject(dataFormat, header);
             DragDrop.DoDragDrop(tvi, dataObj, DragDropEffects.Copy);
+            HitBox.Visibility = Visibility.Visible;
+            effHere.Visibility = Visibility.Hidden;
         }
 
         private void Drop(object sender, DragEventArgs e)
@@ -1272,11 +1299,12 @@ namespace ReChord_Studio
             sp.Children.Add(s);
 
             tt.Content = "Effects:";
+
             c.AllowDrop = true;
             c.Drop += Drop2;
             c.ContextMenu = cm;
             cm.PlacementTarget = c;
-            c.Background = new SolidColorBrush(Color.FromRgb(75,75,75));
+            c.Background = ib;
             c.MouseLeftButtonDown += ClickStackPanel;
             c.Children.Add(sp);
             c.ToolTip = tt;
@@ -1295,6 +1323,7 @@ namespace ReChord_Studio
             vol = (int)s.Value;
             ChangeInstFunct(tb.Text);
             HitBox.IsHitTestVisible = false;
+            instHere.Visibility = Visibility.Hidden;
         }
 
         private void ClickStackPanel(object sender, MouseButtonEventArgs e)
@@ -1318,34 +1347,44 @@ namespace ReChord_Studio
 
         private void record(object sender, MouseButtonEventArgs e)
         {
-            RecBut.Visibility = Visibility.Hidden;
-            StopBut.Visibility = Visibility.Visible;
-
-            // Define the output wav file of the recorded audio
-            string outputFilePath = @"..\\..\\Recordings\Rec" + nRec + ".wav";
-
-            // Redefine the capturer instance with a new instance of the LoopbackCapture class
-            this.CaptureInstance = new WasapiLoopbackCapture();
-
-            // Redefine the audio writer instance with the given configuration
-            this.RecordedAudioWriter = new WaveFileWriter(outputFilePath, CaptureInstance.WaveFormat);
-
-            // When the capturer receives audio, start writing the buffer into the mentioned file
-            this.CaptureInstance.DataAvailable += (s, a) =>
+            if (testPlay())
             {
-                this.RecordedAudioWriter.Write(a.Buffer, 0, a.BytesRecorded);
-            };
+                RecBut.Visibility = Visibility.Hidden;
+                StopBut.Visibility = Visibility.Visible;
 
-            // When the Capturer Stops
-            this.CaptureInstance.RecordingStopped += (s, a) =>
-            {
-                this.RecordedAudioWriter.Dispose();
-                this.RecordedAudioWriter = null;
-                CaptureInstance.Dispose();
-            };
+                // Define the output wav file of the recorded audio
+                string outputFilePath = @"..\\..\\Recordings\Track" + nRec + ".wav";
 
-            // Start recording !
-            this.CaptureInstance.StartRecording();
+                // Redefine the capturer instance with a new instance of the LoopbackCapture class
+                this.CaptureInstance = new WasapiLoopbackCapture();
+
+                // Redefine the audio writer instance with the given configuration
+                this.RecordedAudioWriter = new WaveFileWriter(outputFilePath, CaptureInstance.WaveFormat);
+
+                // When the capturer receives audio, start writing the buffer into the mentioned file
+                this.CaptureInstance.DataAvailable += (s, a) =>
+                {
+                    this.RecordedAudioWriter.Write(a.Buffer, 0, a.BytesRecorded);
+                };
+
+                // When the Capturer Stops
+                this.CaptureInstance.RecordingStopped += (s, a) =>
+                {
+                    this.RecordedAudioWriter.Dispose();
+                    this.RecordedAudioWriter = null;
+                    CaptureInstance.Dispose();
+                };
+
+                // Start recording !
+                this.CaptureInstance.StartRecording();
+            }
+            else {
+                Error1.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void error1Hide(object sender, MouseButtonEventArgs e) {
+            Error1.Visibility = Visibility.Hidden;  
         }
 
         private void Stop(object sender, MouseButtonEventArgs e)
@@ -1354,7 +1393,6 @@ namespace ReChord_Studio
             StopBut.Visibility = Visibility.Hidden;
             // Stop recording !
             this.CaptureInstance.StopRecording();
-            nRec++;
         }
 
         private void reTune(object sender, MouseButtonEventArgs e)
@@ -1388,6 +1426,7 @@ namespace ReChord_Studio
             if (c.ToolTip.ToString().Contains("System.Windows.Controls.ToolTip: ")) {
                 c.ToolTip = c.ToolTip.ToString().Replace("System.Windows.Controls.ToolTip: ", "");
             }
+            effHere.Visibility = Visibility.Hidden;
         }
 
         private void TStep2(object sender, MouseButtonEventArgs e)
@@ -1445,7 +1484,7 @@ namespace ReChord_Studio
             midiOut.Close();
             ProjectWindow pj = new ProjectWindow();
             pj.Show();
-            App.Current.Windows[0].Close();
+            App.Current.Windows[0].Close(); 
         }
 
         private void enabletut(object sender, MouseEventArgs e)
@@ -1468,25 +1507,73 @@ namespace ReChord_Studio
             
         }
 
+
+        private void shortcut2(object sender, MouseEventArgs e)
+        {
+            if (shortenable2 == 0)
+            {
+                NoteDic.Visibility = Visibility.Hidden;
+                shortenable2 = 1;
+            }
+            else
+            {
+                NoteDic.Visibility = Visibility.Visible;
+                shortenable2 = 0;
+            }
+
+
+        }
+
         private void trackhi(object sender, MouseEventArgs e)
         {
+
             Canvas c = (Canvas)sender;
             Canvas c2 = (Canvas)c.Children[0];
             Label l = (Label)c2.Children[0];
 
-            if (selectedLabel != null)
+            if (nRec != int.Parse(l.Content.ToString().Substring(l.Content.ToString().Length - 1)))
             {
-                String mod = selectedLabel.Content.ToString().Substring(1);
-                selectedLabel.Content = mod;
-                selectedLabel = l;
-                String original = l.Content.ToString();
-                l.Content = "➔" + original;
+
+                nRec = int.Parse(l.Content.ToString().Substring(l.Content.ToString().Length - 1));
+
+
+                if (selectedLabel != null)
+                {
+                    String mod = selectedLabel.Content.ToString().Substring(1);
+                    selectedLabel.Content = mod;
+                    selectedCanvas.Opacity = 1;
+                    selectedLabel = l;
+                    selectedCanvas = c;
+                    String original = l.Content.ToString();
+                    l.Content = "➔" + original;
+                    c.Opacity = 0.7;
+                }
+                else
+                {
+                    selectedLabel = l;
+                    selectedCanvas = c;
+                    String original = l.Content.ToString();
+                    l.Content = "➔" + original;
+                    selectedCanvas.Opacity = 0.7;
+                }
             }
             else {
-                selectedLabel = l;
-                String original = l.Content.ToString();
-                l.Content = "➔" + original;
+                String mod = selectedLabel.Content.ToString().Substring(1);
+                selectedLabel.Content = mod;
+                selectedCanvas.Opacity = 1;
+                nRec = 0;
+                selectedLabel = null;
+                selectedCanvas = null;
             }
+            if (nRec == 0)
+            {
+                selectedTrack.Content = "Selected Track Number: none";
+            }
+            else {
+                selectedTrack.Content = "Selected Track Number: " + nRec;
+            }
+
+
         }
 
         private void closeInst(object sender, MouseEventArgs e)
@@ -1528,5 +1615,41 @@ namespace ReChord_Studio
             System.Windows.Application.Current.Shutdown();
         }
 
+        private void Play(object sender, MouseEventArgs e)
+        {
+            String dir = "..\\..\\Recordings";
+
+            if (testPlay() && File.Exists(dir+"\\Track" + nRec + ".wav") && StopBut.Visibility==Visibility.Hidden)
+            {
+                dir += "\\Track" + nRec + ".wav"; 
+                player = new System.Media.SoundPlayer(dir);
+                player.Play();
+            }
+
+            if (nRec == 0) {
+                System.IO.DirectoryInfo di = new DirectoryInfo(dir);
+
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    MediaPlayer mp = new MediaPlayer();
+                    mp.Open(new System.Uri(di.ToString() + "\\" + file.Name, UriKind.Relative));
+                    mp.Play();
+                }
+            }
+        }   
+
+        private void Pause(object sender, MouseEventArgs e)
+        {
+            if (StopBut.Visibility == Visibility.Hidden) {
+                player.Stop();
+            }
+        }
+
+        private Boolean testPlay() {
+            if (nRec > 0) {
+                return true;
+            }
+            return false;
+        }
     }
 }

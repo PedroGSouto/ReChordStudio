@@ -40,9 +40,11 @@
                         <Separator/>
                         <MenuItem Header="Track List" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
                         <MenuItem Header="Mixer" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
+                        <MenuItem Header="PianoRoll" PreviewMouseLeftButtonDown="OpenPR2" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
                         <Separator/>
                         <MenuItem Header="Piano" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
                         <MenuItem Header="Shortcuts" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="shortcut"/>
+                        <MenuItem Header="Note Dictionary" FontFamily="Arial" FontSize="18" FontWeight="Normal" PreviewMouseLeftButtonDown="shortcut2"/>
                     </MenuItem>
                     <MenuItem BorderBrush="#00000000" Header="Options" FontFamily="Arial" FontSize="22" FontWeight="Bold">
                         <MenuItem Header="Midi Settings" FontFamily="Arial" FontSize="18" FontWeight="Normal" />
@@ -295,7 +297,7 @@
                     <Button x:Name="BButton6" HorizontalAlignment="Left" Margin="1162,822,0,0" VerticalAlignment="Top" Width="43" Height="142" Opacity="0" PreviewMouseLeftButtonDown="BButton6_Down" PreviewMouseLeftButtonUp="BButton6_Up" Cursor="Hand"/>
                     <TextBlock x:Name="OBlock" IsHitTestVisible="False" TextAlignment="center" Text="O" Foreground="white" FontSize="36" Canvas.Left="1162" Canvas.Top="885" FontFamily="Arial" FontWeight="Bold" Width="43"/>
                 </Canvas>
-                <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="1626" Canvas.Left="299" Canvas.Top="71">
+                <ScrollViewer Name="sv" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="360" VerticalAlignment="Top" Width="1626" Canvas.Left="299" Canvas.Top="71">
                     <Grid MouseLeftButtonDown="OpenPR" x:Name="TrackGrid" HorizontalAlignment="Left"  Height="Auto" VerticalAlignment="Top" Width="1613" Cursor="Hand">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -314,11 +316,6 @@
                             <Canvas Background="#FFF53535" Width="180" Height="120">
                                 <Label FontSize="24" Canvas.Top="36" Canvas.Left="46" Content="Track 2"/>
                             </Canvas>
-                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="185" Stroke="Black" Canvas.Top="101" Width="52"/>
-                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="434" Stroke="Black" Canvas.Top="74" Width="52"/>
-                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="355" Stroke="Black" Canvas.Top="28" Width="52"/>
-                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="299" Stroke="Black" Canvas.Top="101" Width="52"/>
-                            <Rectangle Fill="#FFCF0808" Height="17" Canvas.Left="243" Stroke="Black" Canvas.Top="51" Width="52"/>
                         </Canvas>
                         <Canvas Grid.Row="2" Background="#FFBCFF5B" Cursor="Hand" PreviewMouseLeftButtonDown="trackhi">
                             <Canvas Background="#FF9FF71F" Width="180" Height="120">
@@ -336,7 +333,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Border BorderBrush="white" BorderThickness="1" Grid.Column="0">
-                            <Canvas AllowDrop="true" Background="#FF4B4B4B" MouseLeftButtonDown="ClickStackPanel" Drop="Drop2">
+                            <Canvas Name="firstControl" AllowDrop="true" MouseLeftButtonDown="ClickStackPanel" Drop="Drop2">
                                 <DockPanel Width="161" Height="240">
                                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="white" Text="Acoustic Grand Piano" TextAlignment="Center" FontSize="18"/>
                                     <Slider DockPanel.Dock="Bottom"  Orientation="Vertical" Value="127" Width="10" Height="150" Minimum="0" Maximum="127" ValueChanged="SliderChange"/>
@@ -470,14 +467,14 @@
                 <TextBlock Name="M" Text="M" Canvas.Left="1229" TextWrapping="Wrap" Canvas.Top="756" Height="52" FontFamily="Arial Black" FontSize="48" Width="52" Foreground="White"/>
                 <TextBlock x:Name="m" Text="m" Canvas.Left="1172" TextWrapping="Wrap" Canvas.Top="756" Height="52" FontFamily="Arial Black" FontSize="48" Width="52" Foreground="White"/>
                 <Image Source="img/Asset_14.png" Height="69" Canvas.Left="753" Canvas.Top="751" Width="414"/>
-                <Image Name="StopBut" PreviewMouseLeftButtonDown="Stop" Visibility="Hidden"  Source="img/Record-Pressed-icon.png" Height="43" Canvas.Left="479" Canvas.Top="30" Width="43" Cursor="Hand"/>
+                <Image Name="StopBut" Visibility="Hidden" PreviewMouseLeftButtonDown="Stop"  Source="img/stop.png" Height="86" Canvas.Left="454" Width="79" Cursor="Hand" Canvas.Top="12"/>
                 <Image x:Name="RecBut" PreviewMouseLeftButtonDown="record" Visibility="Visible" Source="img/Record-Normal-icon.png" Height="43" Canvas.Left="479" Canvas.Top="30" Width="43" Cursor="Hand"/>
                 <TextBlock Name="shen" Visibility="Visible" Canvas.Left="35" TextWrapping="Wrap" Canvas.Top="838" Height="188" Width="469" Foreground="White" FontSize="18">Shortcuts:<LineBreak/><LineBreak/>>Piano notes are associated with the keyboard keys<LineBreak/>>M+Piano Key=Major Chord<LineBreak/>>N+Piano Key=Minor Chord</TextBlock>
-                <TextBlock Visibility="Hidden" Canvas.Left="1409" TextWrapping="Wrap" Canvas.Top="825" Height="214" Width="469" Foreground="White" FontSize="18">Note Dictionary:<LineBreak/>>Keyboard A, K= Piano C (Dó)<LineBreak/>>Keyboard S, L= Piano D (Re)<LineBreak/>>Keyboard D, Ç= Piano E (Mi)<LineBreak/>>Keyboard F= Piano F (Fa)<LineBreak/>>Keyboard G= Piano G (Sol)<LineBreak/>>Keyboard H= Piano A (Lá)<LineBreak/>>Keyboard J= Piano B (Si)</TextBlock>
+                <TextBlock x:Name="NoteDic" Canvas.Left="1467" TextWrapping="Wrap" Canvas.Top="825" Height="214" Width="327" Foreground="White" FontSize="18"><Run Text="Note Dictionary:"/><LineBreak/><Run/><LineBreak/><Run Text="&gt;Keyboard A, K= Piano C (Dó)"/><LineBreak/><Run Text="&gt;Keyboard S, L= Piano D (Re)"/><LineBreak/><Run Text="&gt;Keyboard D, Ç= Piano E (Mi)"/><LineBreak/><Run Text="&gt;Keyboard F= Piano F (Fa)"/><LineBreak/><Run Text="&gt;Keyboard G= Piano G (Sol)"/><LineBreak/><Run Text="&gt;Keyboard H= Piano A (Lá)"/><LineBreak/><Run Text="&gt;Keyboard J= Piano B (Si)"/></TextBlock>
                 <Label Name="tune" VerticalAlignment="Center" HorizontalAlignment="Center" Width="235" Height="64" Content="Tuning: 0" Foreground="white" Canvas.Left="1680" Canvas.Top="751" FontSize="36" FontFamily="Arial Black"/>
                 <Image Cursor="Hand" Source="img/refresh2.ico" Height="41" Canvas.Left="1622" Canvas.Top="756" Width="53" MouseLeftButtonDown="reTune"/>
-                <Image Cursor="Hand" Source="img/play.png" Width="30" Height="30" Canvas.Left="388" Canvas.Top="37"></Image>
-                <Image Cursor="Hand" Source="img/pause.png" Height="30" Width="30" Canvas.Left="420" Canvas.Top="38"></Image>
+                <Image Name="PlayB" PreviewMouseLeftButtonDown="Play" Cursor="Hand" Source="img/play.png" Width="30" Height="30" Canvas.Left="371" Canvas.Top="36"></Image>
+                <Image Name="PauseB" PreviewMouseDown="Pause" Cursor="Hand" Source="img/pause.png" Height="30" Width="30" Canvas.Left="424" Canvas.Top="36"></Image>
 
                 <Canvas Name="T1" Height="350" Width="850" Canvas.Left="535" Canvas.Top="365" Background="#99000000" d:IsHidden="True" >
                     <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="10" Canvas.Top="22">Welcome to the Rechord Studio Tutorial!</TextBlock>
@@ -579,7 +576,7 @@
                 </Canvas>
                 <Canvas Visibility="Hidden" Name="T6" Height="360" Width="850" Canvas.Left="479" Canvas.Top="71" Background="#D8000000">
                     <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" FontWeight="Bold" Canvas.Left="287" Canvas.Top="10">Tracks and Recording</TextBlock>
-                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="67" Canvas.Top="61">>Having multiple tracks will allow you to make a more complex song in a <LineBreak/> more easy and efficient way. <LineBreak/>>You can access and modify each Track recorded notes by double clicking <LineBreak/>on it.<LineBreak/>>You can also add new tracks using the plus button.<LineBreak/>>Finally, you can record your own song by clicking the record button,<LineBreak/>once you're done click it again to finalize the recording.<LineBreak/>Songs are saved in the Recordings folder of this project, <LineBreak/>so you'll find them there. Have Fun!</TextBlock>
+                    <TextBlock Foreground="White" FontFamily="Arial" FontSize="24" Canvas.Left="67" Canvas.Top="61">>Having multiple tracks will allow you to make a more complex song in a <LineBreak/> more easy and efficient way. <LineBreak/>>You can access the Piano Roll by double clicking on a track<LineBreak/>>You can also add new tracks using the plus button.<LineBreak/>>Finally, you can record your own song by clicking the record button,<LineBreak/>once you're done click it again to finalize the recording.<LineBreak/>Songs are saved in the Recordings folder of this project, <LineBreak/>so you'll find them there. Have Fun!</TextBlock>
                     <Button Canvas.Left="705" Canvas.Top="297" Height="43" Width="123" FontSize="24" FontFamily="Arial" Background="#33000000" Foreground="White" Cursor="Hand" PreviewMouseLeftButtonDown="EndTuto">End</Button>
                     <TextBlock Text="➔" Foreground="white" Canvas.Left="-16" Canvas.Top="-15" Height="76" Width="64" FontSize="72" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
@@ -623,6 +620,20 @@
                     </TextBlock>
                 </Canvas>
                 <Rectangle Name="HitBox" IsHitTestVisible="false"  AllowDrop="true" Drop="Drop" Height="240" Width="1626" Canvas.Left="299" Canvas.Top="511" Fill="#00000000"/>
+                <Label Name="selectedTrack" Content="Selected Track Number: " Foreground="white" Canvas.Left="549" Canvas.Top="35" Width="282" FontFamily="Arial" FontWeight="Bold" FontSize="16"/>
+                <Canvas Visibility="Hidden" Name="Error1">
+                    <Rectangle Height="152" Width="418" Canvas.Left="751" Canvas.Top="464" Fill="#B2000000"/>
+                    <TextBlock Canvas.Left="757" Canvas.Top="494" Background="Transparent" Foreground="White" FontFamily="Arial" FontSize="24">Before recording, you must first select <LineBreak/> the track you want to record on.</TextBlock>
+                    <Button Cursor="Hand" PreviewMouseLeftButtonDown="error1Hide" Content="Ok" Height="33" Width="86" Canvas.Left="1063" Canvas.Top="565" FontSize="24" FontFamily="Arial" Background="#FF0F0F0F" Foreground="White"/>
+                </Canvas>
+                <Canvas Name="instHere" IsHitTestVisible="false" Visibility="Hidden">
+                    <Rectangle Height="225" Width="1624" Canvas.Left="299" Canvas.Top="508" Fill="#7F000000"/>
+                    <TextBlock Canvas.Left="872" Canvas.Top="602" Background="Transparent" Foreground="White" FontFamily="Arial" FontSize="48">Drag Instruments Here</TextBlock>
+                </Canvas>
+                <Canvas Name="effHere" IsHitTestVisible="false" Visibility="Hidden">
+                    <Rectangle Height="77" Width="1624" Canvas.Left="300" Canvas.Top="429" Fill="#99000000"/>
+                    <TextBlock Canvas.Left="729" Canvas.Top="449" Background="Transparent" Foreground="White" FontFamily="Arial" Height="40" FontSize="36" Width="757">Drag the effect to one of the instruments below</TextBlock>
+                </Canvas>
             </Canvas>
         </Grid>
     </Viewbox>

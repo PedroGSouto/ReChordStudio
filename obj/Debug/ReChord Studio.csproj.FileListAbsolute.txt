@@ -111,13 +111,6 @@ D:\Projects\LuisNaoGostoDele - Resizable\ReChord Studio\obj\Debug\MiniGame.baml
 D:\Projects\IHC\ReChord Studio\bin\Debug\ReChord Studio.exe.config
 D:\Projects\IHC\ReChord Studio\bin\Debug\ReChord Studio.exe
 D:\Projects\IHC\ReChord Studio\bin\Debug\ReChord Studio.pdb
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.pdb
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.xml
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.Shell.pdb
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.pdb
-D:\Projects\IHC\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
-D:\Projects\IHC\ReChord Studio\bin\Debug\NAudio.xml
 D:\Projects\IHC\ReChord Studio\obj\Debug\ReChord Studio.csprojAssemblyReference.cache
 D:\Projects\IHC\ReChord Studio\obj\Debug\MainWindow.g.cs
 D:\Projects\IHC\ReChord Studio\obj\Debug\MiniGame.g.cs
@@ -135,30 +128,23 @@ D:\Projects\IHC\ReChord Studio\obj\Debug\ReChord Studio.csproj.CoreCompileInputs
 D:\Projects\IHC\ReChord Studio\obj\Debug\ReChord Studio.csproj.CopyComplete
 D:\Projects\IHC\ReChord Studio\obj\Debug\ReChord Studio.exe
 D:\Projects\IHC\ReChord Studio\obj\Debug\ReChord Studio.pdb
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\ReChord Studio.exe.config
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\ReChord Studio.exe
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\ReChord Studio.pdb
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.pdb
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.xml
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.Shell.pdb
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.pdb
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
-C:\Pedro Souto\Projetos\ReChord Studio\bin\Debug\NAudio.xml
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.csprojAssemblyReference.cache
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\MainWindow.g.cs
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\MiniGame.g.cs
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ProjectWindow.g.cs
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\App.g.cs
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio_MarkupCompile.cache
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio_MarkupCompile.lref
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\MainWindow.baml
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\MiniGame.baml
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ProjectWindow.baml
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.g.resources
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord_Studio.Properties.Resources.resources
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.csproj.GenerateResource.cache
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.csproj.CoreCompileInputs.cache
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.csproj.CopyComplete
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.exe
-C:\Pedro Souto\Projetos\ReChord Studio\obj\Debug\ReChord Studio.pdb
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\bin\Debug\ReChord Studio.exe.config
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\bin\Debug\ReChord Studio.exe
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\bin\Debug\ReChord Studio.pdb
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.csprojAssemblyReference.cache
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\MainWindow.g.cs
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\MiniGame.g.cs
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ProjectWindow.g.cs
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\App.g.cs
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio_MarkupCompile.cache
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio_MarkupCompile.lref
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\MainWindow.baml
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\MiniGame.baml
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ProjectWindow.baml
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.g.resources
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord_Studio.Properties.Resources.resources
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.csproj.GenerateResource.cache
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.csproj.CoreCompileInputs.cache
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.csproj.CopyComplete
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.exe
+C:\Pedro Souto\Projetos\IHC\ReChord Studio\obj\Debug\ReChord Studio.pdb
